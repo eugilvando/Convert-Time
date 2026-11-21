@@ -451,10 +451,10 @@
 
                     <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="8,0" VerticalAlignment="Center">
                         <Button MinHeight="36" Padding="14,4" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/eugilvando/My-File-Converter">GitHub</Button>
-                        <Button MinHeight="36" Padding="14,4" Margin="8,0" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/eugilvando/My-File-Converter/releases">Versıes</Button>
+                        <Button MinHeight="36" Padding="14,4" Margin="8,0" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/eugilvando/My-File-Converter/releases">Vers√µes</Button>
                         <Button MinHeight="36" Padding="14,4" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/eugilvando/My-File-Converter/issues">Comunicar um problema</Button>
                     </WrapPanel>
-                    <Label Grid.Row="3" Grid.Column="0" Content="Convert Time ∑ GPLv3 ∑ Baseado em File Converter, de Adrien Allard." Foreground="{DynamicResource LighterForegroundBrush}" Margin="0,2,0,2"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="Convert Time ¬∑ GPLv3 ¬∑ Baseado em File Converter, de Adrien Allard." Foreground="{DynamicResource LighterForegroundBrush}" Margin="0,2,0,2"/>
                 </Grid>
             </TabItem>
         </TabControl>

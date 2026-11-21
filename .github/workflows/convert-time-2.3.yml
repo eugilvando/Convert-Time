@@ -2,7 +2,7 @@ name: Convert Time 2.3.1
 on:
   push:
     branches: [integration]
-    paths: ['.github/workflows/convert-time-2.3.yml']
+    paths: ['.github/workflows/convert-time-2.3.yml', 'RELEASE-2.3.1.md']
   workflow_dispatch:
 permissions:
   contents: read
