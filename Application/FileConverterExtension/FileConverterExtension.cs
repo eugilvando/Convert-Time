@@ -42,11 +42,18 @@ namespace FileConverterExtension
             }
         }
         
+        private static object RegistryDisplayIcons()
+        {
+            using (var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\ConvertTime"))
+            {
+                return key?.GetValue("DisplayPresetIcons");
+            }
+        }
         private bool DisplayPresetIcons
         {
             get
             {
-                string displayPresetIcons = PathHelpers.FileConverterRegistryKey.GetValue("DisplayPresetIcons") as string;
+                string displayPresetIcons = RegistryDisplayIcons() as string;
                 if (displayPresetIcons == null)
                 {
                     return false;
@@ -67,7 +74,7 @@ namespace FileConverterExtension
             {
                 this.LoadExtensionSettingsIfNecessary();
 
-                return this.presetReferences;
+                return this.presetReferences ?? new PresetReference[0];
             }
         }
 
@@ -212,7 +219,7 @@ namespace FileConverterExtension
             this.RefreshExtensionCacheFromSelectedItems();
 
             // Activate compatible menu entries.
-            PresetReference[] presets = this.presetReferences;
+            PresetReference[] presets = this.PresetReferences;
             this.menuEntries.Clear();
             foreach (string extension in this.extensionCache)
             {

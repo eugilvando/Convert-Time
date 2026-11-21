@@ -1,4 +1,4 @@
-﻿// <copyright file="FileConverterExtension.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
+// <copyright file="FileConverterExtension.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
 
 namespace FileConverterExtension
 {
@@ -33,11 +33,8 @@ namespace FileConverterExtension
             {
                 if (PathHelpers.fileConverterRegistryKey == null)
                 {
-                    PathHelpers.fileConverterRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\ConvertTime");
-                    if (PathHelpers.fileConverterRegistryKey == null)
-                    {
-                        throw new Exception("Can't retrieve file converter registry entry.");
-                    }
+                    PathHelpers.fileConverterRegistryKey = Registry.LocalMachine.OpenSubKey(@"Software\ConvertTime") ?? Registry.CurrentUser.OpenSubKey(@"Software\ConvertTime");
+                    
                 }
 
                 return PathHelpers.fileConverterRegistryKey;
@@ -50,7 +47,7 @@ namespace FileConverterExtension
             {
                 if (string.IsNullOrEmpty(PathHelpers.fileConverterPath))
                 {
-                    PathHelpers.fileConverterPath = PathHelpers.FileConverterRegistryKey.GetValue("Path") as string;
+                    PathHelpers.fileConverterPath = PathHelpers.FileConverterRegistryKey?.GetValue("Path") as string ?? Path.Combine(Path.GetDirectoryName(typeof(PathHelpers).Assembly.Location), "FileConverter.exe");
                 }
 
                 return PathHelpers.fileConverterPath;

@@ -1,9 +1,13 @@
-﻿<Project Sdk="WixToolset.Sdk/5.0.2">
+<Project Sdk="WixToolset.Sdk/5.0.2">
   <PropertyGroup>
-    <ProductVersion>2.3.0</ProductVersion>
-    <OutputName>Convert-Time-2.3.0-x64</OutputName> <!-- https://github.com/firegiant/HeatWaveSupport/issues/73 -->
+    <Cultures>pt-PT</Cultures>
+    <ProductVersion>2.3.1</ProductVersion>
+    <OutputName>Convert-Time-2.3.1-x64</OutputName> <!-- https://github.com/firegiant/HeatWaveSupport/issues/73 -->
       <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(SignedMenuPath)' != ''">
+    <DefineConstants>$(DefineConstants);SignedMenuPath=$(SignedMenuPath)</DefineConstants>
   </PropertyGroup>
   <Target Name="CollectSuggestedVisualStudioComponentIds" />
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

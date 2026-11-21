@@ -6,6 +6,25 @@ Aplicação para Windows que converte imagens, áudio, vídeo e documentos. Abra
 
 O menu de contexto clássico permite converter diretamente ou abrir a seleção na aplicação. No Windows 11 encontra estas ações em **Mostrar mais opções**. Em **Tema**, escolha Sistema, Claro ou Escuro. A conversão de documentos Office depende da aplicação Microsoft Office correspondente instalada.
 
+## Menu moderno do Windows 11
+
+O MSI público instala o menu clássico. Para distribuir o primeiro menu, crie o pacote com `Installer/Build-ExplorerPackage.ps1 -OutputDirectory <pasta> -Publisher <titular> -SigningThumbprint <impressão-digital>`, valide a assinatura com o SignTool e passe `/p:SignedMenuPath=<caminho absoluto do ConvertTime.Menu.msix>` ao MSBuild. O Windows tem de confiar no certificado. O MSI regista o pacote para o utilizador que instala a aplicação.
+
+Para testar no seu próprio PC com Windows 11, instale primeiro o MSI 2.3.1. Com as ferramentas C++ x64 do Visual Studio e o Windows SDK instalados, execute na raiz do repositório:
+
+```powershell
+.\Installer\Build-ExplorerPackage.ps1 -LocalTest -OutputDirectory "$env:TEMP\ConvertTime-Menu"
+```
+
+Numa janela PowerShell como administrador, registe o pacote de teste:
+
+```powershell
+$app = Split-Path (Get-ItemPropertyValue 'HKLM:\SOFTWARE\ConvertTime' Path)
+Add-AppxPackage -Path "$env:TEMP\ConvertTime-Menu\ConvertTime.Menu.LocalTest.msix" -ExternalLocation $app -AllowUnsigned
+```
+
+Selecione uma imagem no Explorador e abra o primeiro menu. O Convert Time oferece a abertura da seleção e os atalhos PNG e WebP quando os respetivos perfis aceitam todos os ficheiros. Se o Explorador tiver o registo antigo em cache, termine e volte a iniciar a sessão. Para remover a identidade de teste, execute `Get-AppxPackage ConvertTime.ExplorerMenu.LocalTest | Remove-AppxPackage`. A distribuição pública do menu moderno requer um pacote assinado.
+
 Convert Time é uma derivação de [File Converter, de Adrien Allard](https://github.com/Tichau/FileConverter), distribuída sob GPLv3. Os agradecimentos e as informações sobre as dependências encontram-se abaixo.
 
 ## Setup development environment

@@ -1,4 +1,4 @@
-name: Convert Time 2.3.0
+name: Convert Time 2.3.1
 on:
   push:
     branches: [integration]
@@ -22,7 +22,7 @@ jobs:
       - name: Instalar, abrir a GUI e converter um lote
         shell: pwsh
         run: |
-          $msi = Get-ChildItem Installer -Recurse -Filter Convert-Time-2.3.0-x64.msi | Where-Object FullName -Match '\\bin\\' | Select-Object -First 1
+          $msi = Get-ChildItem Installer -Recurse -Filter Convert-Time-2.3.1-x64.msi | Where-Object FullName -Match '\\bin\\' | Select-Object -First 1
           if (!$msi) { throw 'MSI em falta' }
           $install = Start-Process msiexec -ArgumentList "/i `"$($msi.FullName)`" /qn /norestart" -Wait -PassThru
           if ($install.ExitCode -notin 0,3010) { throw "MSI: $($install.ExitCode)" }
@@ -43,9 +43,34 @@ jobs:
           } finally { if (!$job.HasExited) { $job.Kill(); $job.WaitForExit() } }
           New-Item -ItemType Directory -Path dist
           Copy-Item $msi.FullName dist/
+      - name: Validar temas e comandos nativos do Explorador
+        shell: pwsh
+        run: |
+          $exe = Join-Path $env:ProgramFiles 'Convert Time\FileConverter.exe'
+          $themeTest = Resolve-Path Installer/Test-DesktopTheme.ps1
+          & powershell.exe -NoProfile -STA -File $themeTest -ExePath $exe
+          if ($LASTEXITCODE) { throw 'Falha nos temas WPF' }
+          $build = Join-Path $env:RUNNER_TEMP 'shell-build'
+          & ./Installer/Build-ExplorerPackage.ps1 -OutputDirectory $build -LocalTest
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vs = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          $command = 'call "{0}\VC\Auxiliary\Build\vcvars64.bat" >nul && cl /nologo /utf-8 /EHsc /MT Application\ExplorerCommand\Smoke.cpp /Fe:"{1}\Smoke.exe" /link ole32.lib shell32.lib' -f $vs,$build
+          & cmd.exe /d /c $command
+          if ($LASTEXITCODE) { throw 'Falha ao compilar o teste COM' }
+          $dll = Get-ChildItem $build -Recurse -Filter ConvertTimeMenu.dll | Select-Object -First 1
+          $jpg = Join-Path $env:RUNNER_TEMP 'convert-time-test\first.jpg'
+          $sample = Join-Path $env:RUNNER_TEMP 'menu-input.jpg'
+          Copy-Item $jpg $sample
+          & "$build\Smoke.exe" $dll.FullName $sample
+          if ($LASTEXITCODE) { throw "Comando do Explorador: $LASTEXITCODE" }
+          $output = [IO.Path]::ChangeExtension($sample,'png')
+          $deadline = (Get-Date).AddSeconds(50)
+          while (!(Test-Path $output) -and (Get-Date) -lt $deadline) {Start-Sleep -Milliseconds 400}
+          if (!(Test-Path $output) -or (Get-Item $output).Length -lt 100) { throw 'A extensão não converteu a imagem' }
+
       - uses: actions/upload-artifact@v4
         with:
-          name: Convert-Time-2.3.0-x64
+          name: Convert-Time-2.3.1-x64
           path: dist/*.msi
   release:
     needs: build
@@ -57,9 +82,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: Convert-Time-2.3.0-x64
+          name: Convert-Time-2.3.1-x64
           path: dist
       - name: Publicar release com o instalador validado
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create v2.3.0 dist/*.msi --target "$GITHUB_SHA" --title "Convert Time 2.3.0" --notes-file RELEASE-2.3.0.md
+        run: gh release create v2.3.1 dist/*.msi --target "$GITHUB_SHA" --title "Convert Time 2.3.1" --notes-file RELEASE-2.3.1.md

@@ -38,13 +38,29 @@ namespace FileConverter
             bool dark = Mode == 2 || (Mode == 0 && Equals(Microsoft.Win32.Registry.GetValue(
                 @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", 1), 0));
             var resources = System.Windows.Application.Current.Resources;
-            Set(resources, "Window_BackgroundBrush", dark ? "#202124" : "#F8F8F9");
-            Set(resources, "ReadyForegroundBrush", dark ? "#F2F2F2" : "#242428");
-            Set(resources, "MainBrush", "#FF7466");
-            foreach (var key in new object[] {SystemColors.WindowBrushKey, SystemColors.ControlBrushKey, "Button_BackgroundBrush", "TextBox_BackgroundBrush", "TabControl_BackgroundBrush", "TreeView_BackgroundBrush"})
-                Set(resources, key, dark ? "#303136" : "#FFFFFF");
-            foreach (var key in new object[] {SystemColors.WindowTextBrushKey, SystemColors.ControlTextBrushKey, "Markdown_ForegroundBrush"})
-                Set(resources, key, dark ? "#F4F4F4" : "#252529");
+            string[,] colors = {
+                { "Window_BackgroundColor", "#F6F6F8", "#191A1E" }, { "BackgroundColor", "#FFFFFF", "#25262B" },
+                { "DarkBackgroundColor", "#F1F1F3", "#303137" }, { "Control_BorderColor", "#C5C6CC", "#55565F" },
+                { "Button_BackgroundColor", "#FFFFFF", "#303137" }, { "Button_MouseOver_BackgroundColor", "#F7E5E2", "#443637" },
+                { "TileButton_MouseOver_BackgroundColor", "#F7E5E2", "#443637" }, { "TileButton_MouseOver_BorderColor", "#B85145", "#FF897B" },
+                { "DarkForegroundColor", "#202126", "#F2F2F5" }, { "LightForegroundColor", "#494A54", "#CFD0D7" },
+                { "LighterForegroundColor", "#62636A", "#B5B6BF" }, { "AccentForegroundColor", "#A63630", "#FF958B" },
+                { "MainColor", "#AE4037", "#FF9185" }, { "MainLighterColor", "#FBDAD5", "#553936" },
+                { "MainLightColor", "#DB6054", "#FFAB9E" }, { "MainDarkColor", "#892F28", "#FF9B90" }, { "MainDarkerColor", "#69231F", "#FFB4A9" },
+                { "AccentBackgroundColor", "#FFE3DF", "#493231" }, { "PendingBackgroundColor", "#FFF1CC", "#44391F" },
+                { "SuccessBackgroundColor", "#DCF3E8", "#233C34" }, { "ErrorBackgroundColor", "#FFE1E1", "#492E32" },
+                { "PendingForegroundColor", "#7D5700", "#FFCF69" }, { "SuccessForegroundColor", "#206544", "#92E0BB" },
+                { "ErrorForegroundColor", "#A02135", "#FFACB6" }
+            };
+            for (int i = 0; i < colors.GetLength(0); i++)
+                resources[colors[i, 0]] = (Color)ColorConverter.ConvertFromString(colors[i, dark ? 2 : 1]);
+            foreach (var key in new object[] { SystemColors.WindowBrushKey, SystemColors.ControlBrushKey, SystemColors.MenuBrushKey })
+                Set(resources, key, dark ? "#25262B" : "#FFFFFF");
+            foreach (var key in new object[] { SystemColors.WindowTextBrushKey, SystemColors.ControlTextBrushKey, SystemColors.MenuTextBrushKey })
+                Set(resources, key, dark ? "#F2F2F5" : "#202126");
+            Set(resources, SystemColors.HighlightBrushKey, dark ? "#653F3B" : "#FBDAD5");
+            Set(resources, SystemColors.HighlightTextBrushKey, dark ? "#FFFFFF" : "#202126");
+            Set(resources, SystemColors.GrayTextBrushKey, dark ? "#AAAAAE" : "#62636A");
         }
         private static void Set(ResourceDictionary resources, object key, string hex)
         {

@@ -418,7 +418,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="256"/>
+                        <ColumnDefinition Width="190"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -449,45 +449,12 @@
                            Source="{Binding Source=/FileConverter;component/Resources/ApplicationIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=256}">
                     </Image>
 
-                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                        <Label Content="{x:Static project:Resources.DonateDescription}" VerticalAlignment="Center" FontStyle="Italic"/>
-                        <controls:IconButton Margin="5,0,5,0" Background="#0467B4" Foreground="White" MouseOverBrush="#007AD8" PressedBrush="#0F4199"
-                                      Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=3BDWQTYTTA3D8&amp;item_name=File+Converter+Donations&amp;currency_code=EUR"
-                                      IconSource="/FileConverter;component/Resources/PaypalIcon.png" Content="{x:Static project:Resources.DonateButtonTitle}" FontWeight="Bold" FontSize="14" />
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
-                        <Button ToolTip="{x:Static project:Resources.GitHubButtonDescription}" Padding="1" Margin="5,0,5,0" 
-                                Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/Tichau/FileConverter/?from=about"
-                                Style="{DynamicResource TileButton}">
-                            <Button.Content>
-                                <Image Source="/FileConverter;component/Resources/GitHub-Icon.png"></Image>
-                            </Button.Content>
-                        </Button>
-                        <Button ToolTip="{x:Static project:Resources.IssueButtonDescription}" Padding="1" Margin="5,0,5,0" 
-                                Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/Tichau/FileConverter/issues?from=about"
-                                Style="{DynamicResource TileButton}">
-                            <Button.Content>
-                                <Image Source="/FileConverter;component/Resources/GitHub-Issue-Icon.png"></Image>
-                            </Button.Content>
-                        </Button>
-                        <Button ToolTip="{x:Static project:Resources.DocumentationButtonDescription}" Padding="1" Margin="5,0,5,0" 
-                                Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/Tichau/FileConverter/wiki?from=about"
-                                Style="{DynamicResource TileButton}">
-                            <Button.Content>
-                                <Image Source="/FileConverter;component/Resources/GitHub-Documentation-Icon.png"></Image>
-                            </Button.Content>
-                        </Button>
-                        <Button ToolTip="{x:Static project:Resources.WebsiteButtonDescription}" Padding="1" Margin="5,0,5,0" 
-                                Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://file-converter.io?from=about"
-                                Style="{DynamicResource TileButton}">
-                            <Button.Content>
-                                <Image Source="/FileConverter;component/Resources/WebSite-Icon.png"></Image>
-                            </Button.Content>
-                        </Button>
-                    </StackPanel>
-
-                    <Label Grid.Row="3" Grid.Column="0" Content="Copyright @ 2026, Adrien Allard. All right reserved." Foreground="{DynamicResource LighterForegroundBrush}" Margin="0,2,0,2"/>
+                    <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="8,0" VerticalAlignment="Center">
+                        <Button MinHeight="36" Padding="14,4" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/eugilvando/My-File-Converter">GitHub</Button>
+                        <Button MinHeight="36" Padding="14,4" Margin="8,0" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/eugilvando/My-File-Converter/releases">Versões</Button>
+                        <Button MinHeight="36" Padding="14,4" Command="{Binding OpenUrlCommand}" CommandParameter="https://github.com/eugilvando/My-File-Converter/issues">Comunicar um problema</Button>
+                    </WrapPanel>
+                    <Label Grid.Row="3" Grid.Column="0" Content="Convert Time · GPLv3 · Baseado em File Converter, de Adrien Allard." Foreground="{DynamicResource LighterForegroundBrush}" Margin="0,2,0,2"/>
                 </Grid>
             </TabItem>
         </TabControl>

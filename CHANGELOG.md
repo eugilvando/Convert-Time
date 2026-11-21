@@ -1,3 +1,9 @@
+# Convert Time 2.3.1
+
+* Interface maior e contraste corrigido nos temas, incluindo seletores e progresso.
+* Sobre atualizado e opção de donativo removida.
+* MSI com a marca Convert Time e textos em português. Menu moderno disponível com identidade MSIX registada.
+
 # Convert Time 2.3.0
 
 * Janela de conversão para imagens, áudio, vídeo e documentos, com seleção múltipla, arrastar e largar, filtro de perfis compatíveis e pasta de destino por lote.

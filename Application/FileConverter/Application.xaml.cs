@@ -39,7 +39,7 @@ namespace FileConverter
                                                       {
                                                           Major = 2,
                                                           Minor = 3,
-                                                          Patch = 0,
+                                                          Patch = 1,
                                                       };
 
         private bool needToRunConversionThread;
@@ -345,6 +345,16 @@ namespace FileConverter
                             index++;
                             break;
 
+                        case "shell-handle":
+                            if (++index >= args.Length || !long.TryParse(args[index], out long handle) || handle <= 0 ||
+                                !TryReadShellSelection(handle, filePaths))
+                            {
+                                Debug.LogError(errorCode: 2, "Invalid Explorer selection.");
+                                Application.AskForShutdown();
+                                return;
+                            }
+                            break;
+
                         case "input-files":
                             if (index >= args.Length - 1)
                             {
@@ -399,6 +409,29 @@ namespace FileConverter
                 return;
             }
             this.RunConversions(filePaths, conversionPresetName);
+        }
+
+        private static bool TryReadShellSelection(long handle, List<string> files)
+        {
+            try
+            {
+                using (var owned = new Microsoft.Win32.SafeHandles.SafeFileHandle(new IntPtr(handle), true))
+                using (var stream = new FileStream(owned, FileAccess.Read))
+                using (var reader = new StreamReader(stream, System.Text.Encoding.Unicode))
+                {
+                    string path;
+                    while ((path = reader.ReadLine()) != null)
+                    {
+                        if (!Path.IsPathRooted(path) || !File.Exists(path)) return false;
+                        files.Add(path);
+                    }
+                }
+                return files.Count != 0;
+            }
+            catch (Exception e) when (e is IOException || e is UnauthorizedAccessException || e is ArgumentException)
+            {
+                return false;
+            }
         }
 
         internal void StartBatch(List<string> files, ConversionPreset preset)

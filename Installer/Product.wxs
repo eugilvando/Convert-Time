@@ -1,15 +1,18 @@
-﻿<!-- Upgrade documentation: http://wixtoolset.org/documentation/manual/v3/howtos/updates/major_upgrade.html -->
+<!-- Upgrade documentation: http://wixtoolset.org/documentation/manual/v3/howtos/updates/major_upgrade.html -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-    <Package Name="Convert Time" Language="1033" Version="2.3.0" Manufacturer="Convert Time" UpgradeCode="D4CC8807-F2CA-4838-B851-F43EA4E73DB3" InstallerVersion="500">
+    <Package Name="Convert Time" Language="2070" Version="2.3.1" Manufacturer="Convert Time" UpgradeCode="D4CC8807-F2CA-4838-B851-F43EA4E73DB3" InstallerVersion="500">
         <Icon Id="icon.ico" SourceFile="..\Resources\Icons\ApplicationIcon.ico" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
-        <SetProperty Id="ARPINSTALLLOCATION" Value="[ApplicationFolder]" After="CostFinalize" />
+        <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLFOLDER]" After="CostFinalize" />
       
-        <MajorUpgrade Schedule="afterInstallInitialize" DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
+        <Property Id="ARPURLINFOABOUT" Value="https://github.com/eugilvando/My-File-Converter"/>
+        <Property Id="ARPHELPLINK" Value="https://github.com/eugilvando/My-File-Converter/issues"/>
+        <Property Id="ARPURLUPDATEINFO" Value="https://github.com/eugilvando/My-File-Converter/releases"/>
+        <MajorUpgrade Schedule="afterInstallInitialize" DowngradeErrorMessage="Já existe uma versão mais recente do [ProductName] instalada." />
         
         <Media Id="1" Cabinet="CabFile.cab" EmbedCab="yes" />
 
-        <Feature Id="Application" Title="Installer" Level="1">
+        <Feature Id="Application" Title="Convert Time" Level="1">
             <ComponentGroupRef Id="ProductComponents" />
             <ComponentGroupRef Id="Languages" />
         </Feature>
@@ -19,16 +22,24 @@
         <CustomAction Id="PostInstallInit" ExeCommand="--post-install-init" Execute="immediate" FileRef="FileConverter.exe" />
 
         <UI>
-            <ProgressText Action="InstallFiles" Template="File: [1],  Directory: [9],  Size: [6]" Message="Copying new files" />
-            <ProgressText Action="InstallShell" Message="Register shell extension to Windows Explorer" />
-            <ProgressText Action="UninstallShell" Message="Unregister shell extension from Windows Explorer" />
-            <ProgressText Action="PostInstallInit" Message="Initialize conversion presets" />
+            <ProgressText Action="InstallFiles" Template="File: [1],  Directory: [9],  Size: [6]" Message="A copiar os ficheiros do Convert Time" />
+            <ProgressText Action="InstallShell" Message="A adicionar o Convert Time ao Explorador de Ficheiros" />
+            <ProgressText Action="UninstallShell" Message="A remover o Convert Time do Explorador de Ficheiros" />
+            <ProgressText Action="PostInstallInit" Message="A preparar os perfis de conversão" />
         </UI>
 
         <PropertyRef Id="WIX_IS_NETFRAMEWORK_48_OR_LATER_INSTALLED" />
-        <Launch Condition="Installed OR WIX_IS_NETFRAMEWORK_48_OR_LATER_INSTALLED" Message="This application requires .NET Framework 4.8. Please install the .NET Framework then run this installer again." />
+        <Launch Condition="Installed OR WIX_IS_NETFRAMEWORK_48_OR_LATER_INSTALLED" Message="O Convert Time requer o .NET Framework 4.8. Instale-o e volte a abrir este instalador." />
 
+        <?ifdef SignedMenuPath ?>
+        <CustomAction Id="RegisterModernMenu" Directory="System64Folder" ExeCommand="WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive -File &quot;[INSTALLFOLDER]ExplorerPackage.ps1&quot;" Execute="immediate" Return="check"/>
+        <CustomAction Id="UnregisterModernMenu" Directory="System64Folder" ExeCommand="WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive -File &quot;[INSTALLFOLDER]ExplorerPackage.ps1&quot; -Remove" Execute="immediate" Return="check"/>
+        <?endif?>
         <InstallExecuteSequence>
+            <?ifdef SignedMenuPath ?>
+            <Custom Action="RegisterModernMenu" After="PostInstallInit" Condition="NOT Installed"/>
+            <Custom Action="UnregisterModernMenu" Before="RemoveFiles" Condition="REMOVE~=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE"/>
+            <?endif?>
             <Custom Action="UninstallShell" Before="RemoveRegistryValues" Condition="(NOT UPGRADINGPRODUCTCODE) AND (REMOVE~=&quot;ALL&quot;)" />
             <Custom Action="InstallShell" After="WriteRegistryValues" Condition="NOT Installed" />
             <Custom Action="PostInstallInit" After="InstallFinalize" Condition="NOT Installed" />
@@ -59,13 +70,17 @@
 
     <Fragment>
         <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+            <?ifdef SignedMenuPath ?>
+            <Component Guid="{6C4773B1-8A09-4FE9-8EAD-B5E06D0249A6}"><File Source="$(var.SignedMenuPath)" Name="ConvertTime.Menu.msix" KeyPath="yes"/></Component>
+            <Component Guid="{6D081453-1B89-44F5-B378-1DC91A82CE96}"><File Source="ExplorerPackage.ps1" KeyPath="yes"/></Component>
+            <?endif?>
             <!-- Application -->
             <Component Guid="{E0BB67D2-4FDB-4205-B783-E5DB177BC285}">
                 <File Id="FileConverter.exe" Source="$(var.FileConverter.TargetPath)" KeyPath="yes" Checksum="yes">
-                    <Shortcut Id="ApplicationStartMenuShortcut" Directory="ApplicationStartMenuShortcut" Advertise="yes" WorkingDirectory="INSTALLFOLDER" Name="Convert Time" Description="Convert and compress everything in 2 clicks!" Icon="Icon.exe">
+                    <Shortcut Id="ApplicationStartMenuShortcut" Directory="ApplicationStartMenuShortcut" Advertise="yes" WorkingDirectory="INSTALLFOLDER" Name="Convert Time" Description="Converter imagens, áudio, vídeo e documentos" Icon="Icon.exe">
                         <Icon Id="Icon.exe" SourceFile="$(var.FileConverter.TargetPath)" />
                     </Shortcut>
-                    <Shortcut Id="ApplicationSettingsStartMenuShortcut" Directory="ApplicationStartMenuShortcut" Advertise="yes" WorkingDirectory="INSTALLFOLDER" Name="Convert Time · Perfis" Description="Configure the conversion and compression presets" Arguments="--settings" Icon="SettingsIcon.exe">
+                    <Shortcut Id="ApplicationSettingsStartMenuShortcut" Directory="ApplicationStartMenuShortcut" Advertise="yes" WorkingDirectory="INSTALLFOLDER" Name="Convert Time · Perfis" Description="Configurar os perfis do Convert Time" Arguments="--settings" Icon="SettingsIcon.exe">
                         <Icon Id="SettingsIcon.exe" SourceFile="$(var.FileConverter.TargetPath)" />
                     </Shortcut>
                 </File>
@@ -165,8 +180,8 @@
             </Component>
 
             <!-- Registry entries -->
-            <Component Id="RegistryEntries" Guid="{F5240B49-D917-439D-B46E-823CAFBF0637}">
-                <RegistryKey Root="HKCU" Key="Software\ConvertTime" ForceDeleteOnUninstall="yes">
+            <Component Id="RegistryEntries" Guid="{D6F197AB-309A-43A5-AE34-BC08353E2C05}">
+                <RegistryKey Root="HKLM" Key="Software\ConvertTime">
                     <RegistryValue Name="Path" Type="string" Value="[INSTALLFOLDER]FileConverter.exe" />
                 </RegistryKey>
             </Component>

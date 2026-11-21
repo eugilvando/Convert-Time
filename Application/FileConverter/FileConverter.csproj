@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -106,6 +106,7 @@
     <Compile Include="ApplicationTerminateArgs.cs" />
     <Compile Include="ConvertTheme.cs" />
     <Page Include="Views\ConvertWindow.xaml" />
+    <Page Include="Views\Resources\SelectStyles.xaml" />
     <Compile Include="Views\ConvertWindow.xaml.cs"><DependentUpon>ConvertWindow.xaml</DependentUpon></Compile>
     <Compile Include="Controls\ConversionJobControl.xaml.cs">
       <DependentUpon>ConversionJobControl.xaml</DependentUpon>
@@ -380,9 +381,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\LogIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\PaypalIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ExportIcon.ico" />
