@@ -5,9 +5,9 @@
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
         <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLFOLDER]" After="CostFinalize" />
       
-        <Property Id="ARPURLINFOABOUT" Value="https://github.com/eugilvando/My-File-Converter"/>
-        <Property Id="ARPHELPLINK" Value="https://github.com/eugilvando/My-File-Converter/issues"/>
-        <Property Id="ARPURLUPDATEINFO" Value="https://github.com/eugilvando/My-File-Converter/releases"/>
+        <Property Id="ARPURLINFOABOUT" Value="https://github.com/eugilvando/Convert-Time"/>
+        <Property Id="ARPHELPLINK" Value="https://github.com/eugilvando/Convert-Time/issues"/>
+        <Property Id="ARPURLUPDATEINFO" Value="https://github.com/eugilvando/Convert-Time/releases"/>
         <MajorUpgrade Schedule="afterInstallInitialize" DowngradeErrorMessage="Já existe uma versão mais recente do [ProductName] instalada." />
         
         <Media Id="1" Cabinet="CabFile.cab" EmbedCab="yes" />

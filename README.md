@@ -2,7 +2,7 @@
 
 Aplicação para Windows que converte imagens, áudio, vídeo e documentos. Abra **Convert Time** no menu Iniciar, adicione os ficheiros e escolha um perfil compatível com todo o lote. Pode ajustar as opções do perfil para essa conversão, escolher a pasta de destino e acompanhar o progresso.
 
-[Transferir o instalador para Windows x64](https://github.com/eugilvando/My-File-Converter/releases) · [Comunicar um problema](https://github.com/eugilvando/My-File-Converter/issues)
+[Transferir o instalador para Windows x64](https://github.com/eugilvando/Convert-Time/releases) · [Comunicar um problema](https://github.com/eugilvando/Convert-Time/issues)
 
 O menu de contexto clássico permite converter diretamente ou abrir a seleção na aplicação. No Windows 11 encontra estas ações em **Mostrar mais opções**. Em **Tema**, escolha Sistema, Claro ou Escuro. A conversão de documentos Office depende da aplicação Microsoft Office correspondente instalada.
 
