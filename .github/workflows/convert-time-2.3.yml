@@ -65,8 +65,20 @@ jobs:
           if ($LASTEXITCODE) { throw "Comando do Explorador: $LASTEXITCODE" }
           $output = [IO.Path]::ChangeExtension($sample,'png')
           $deadline = (Get-Date).AddSeconds(50)
-          while (!(Test-Path $output) -and (Get-Date) -lt $deadline) {Start-Sleep -Milliseconds 400}
-          if (!(Test-Path $output) -or (Get-Item $output).Length -lt 100) { throw 'A extensão não converteu a imagem' }
+          # The converter creates the destination before it finishes writing it.
+          Add-Type -AssemblyName System.Drawing
+          $verified = $false
+          do {
+            if (Test-Path -LiteralPath $output) {
+              try {
+                $image = [Drawing.Image]::FromFile($output)
+                try { $verified = $image.RawFormat.Guid -eq [Drawing.Imaging.ImageFormat]::Png.Guid -and $image.Width -gt 0 }
+                finally { $image.Dispose() }
+              } catch { $verified = $false }
+            }
+            if (!$verified) { Start-Sleep -Milliseconds 400 }
+          } until ($verified -or (Get-Date) -gt $deadline)
+          if (!$verified) { throw 'A extensao nao produziu uma imagem PNG valida' }
 
       - uses: actions/upload-artifact@v4
         with:
