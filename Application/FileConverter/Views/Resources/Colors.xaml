@@ -1,5 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:FileConverter">
+    <local:ThemePalette x:Key="ThemePalette"/>
 
     <Color x:Key="TransparentColor">#00FFFFFF</Color>
 
@@ -32,66 +34,66 @@
     <Color x:Key="TileButton_MouseOver_BorderColor">#D3D0CE</Color>
 
     <!-- Custom styles colors -->
-    <SolidColorBrush x:Key="Button_BackgroundBrush" Color="{DynamicResource Button_BackgroundColor}" />
-    <SolidColorBrush x:Key="Button_BorderBrush" Color="{DynamicResource Control_BorderColor}" />
-    <SolidColorBrush x:Key="Button_IsMouseOver_BackgroundBrush" Color="{DynamicResource Button_MouseOver_BackgroundColor}" />
-    <SolidColorBrush x:Key="Button_IsMouseOver_BorderBrush" Color="{DynamicResource MainColor}" />
-    <SolidColorBrush x:Key="Button_IsPressed_BackgroundBrush" Color="{DynamicResource MainLighterColor}" />
-    <SolidColorBrush x:Key="Button_IsPressed_BorderBrush" Color="{DynamicResource MainDarkColor}" />
+    <SolidColorBrush x:Key="Button_BackgroundBrush" Color="{Binding [Button_BackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="Button_BorderBrush" Color="{Binding [Control_BorderColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="Button_IsMouseOver_BackgroundBrush" Color="{Binding [Button_MouseOver_BackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="Button_IsMouseOver_BorderBrush" Color="{Binding [MainColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="Button_IsPressed_BackgroundBrush" Color="{Binding [MainLighterColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="Button_IsPressed_BorderBrush" Color="{Binding [MainDarkColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
 
-    <SolidColorBrush x:Key="Hyperlink_ForegroundBrush" Color="{DynamicResource MainColor}" />
+    <SolidColorBrush x:Key="Hyperlink_ForegroundBrush" Color="{Binding [MainColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
 
-    <SolidColorBrush x:Key="TabControl_BackgroundBrush" Color="{DynamicResource BackgroundColor}" />
-    <SolidColorBrush x:Key="TabControl_BorderBrush" Color="{DynamicResource Control_BorderColor}" />
-    <SolidColorBrush x:Key="TabItem_BackgroundBrush" Color="{DynamicResource Control_BorderColor}" />
-    <SolidColorBrush x:Key="TabItem_BorderBrush" Color="{DynamicResource TransparentColor}" />
-    <SolidColorBrush x:Key="TabItem_IsSelected_BackgroundBrush" Color="{DynamicResource BackgroundColor}" />
-    <SolidColorBrush x:Key="TabItem_IsSelected_BorderBrush" Color="{DynamicResource Control_BorderColor}" />
+    <SolidColorBrush x:Key="TabControl_BackgroundBrush" Color="{Binding [BackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TabControl_BorderBrush" Color="{Binding [Control_BorderColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TabItem_BackgroundBrush" Color="{Binding [Control_BorderColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TabItem_BorderBrush" Color="{Binding [TransparentColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TabItem_IsSelected_BackgroundBrush" Color="{Binding [BackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TabItem_IsSelected_BorderBrush" Color="{Binding [Control_BorderColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
 
-    <SolidColorBrush x:Key="TextBox_BackgroundBrush" Color="{DynamicResource BackgroundColor}" />
+    <SolidColorBrush x:Key="TextBox_BackgroundBrush" Color="{Binding [BackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
     
-    <SolidColorBrush x:Key="TileButton_BackgroundBrush" Color="{DynamicResource TransparentColor}" />
-    <SolidColorBrush x:Key="TileButton_BorderBrush" Color="{DynamicResource TransparentColor}" />
-    <SolidColorBrush x:Key="TileButton_IsMouseOver_BackgroundBrush" Color="{DynamicResource TileButton_MouseOver_BackgroundColor}" />
-    <SolidColorBrush x:Key="TileButton_IsMouseOver_BorderBrush" Color="{DynamicResource TileButton_MouseOver_BorderColor}" />
-    <SolidColorBrush x:Key="TileButton_IsPressed_BackgroundBrush" Color="{DynamicResource MainLighterColor}" />
-    <SolidColorBrush x:Key="TileButton_IsPressed_BorderBrush" Color="{DynamicResource TransparentColor}" />
+    <SolidColorBrush x:Key="TileButton_BackgroundBrush" Color="{Binding [TransparentColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TileButton_BorderBrush" Color="{Binding [TransparentColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TileButton_IsMouseOver_BackgroundBrush" Color="{Binding [TileButton_MouseOver_BackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TileButton_IsMouseOver_BorderBrush" Color="{Binding [TileButton_MouseOver_BorderColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TileButton_IsPressed_BackgroundBrush" Color="{Binding [MainLighterColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TileButton_IsPressed_BorderBrush" Color="{Binding [TransparentColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
 
-    <SolidColorBrush x:Key="TreeView_BackgroundBrush" Color="{DynamicResource BackgroundColor}" />
-    <SolidColorBrush x:Key="TreeView_BorderBrush" Color="{DynamicResource Control_BorderColor}" />
+    <SolidColorBrush x:Key="TreeView_BackgroundBrush" Color="{Binding [BackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="TreeView_BorderBrush" Color="{Binding [Control_BorderColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
 
-    <SolidColorBrush x:Key="Window_BackgroundBrush" Color="{DynamicResource Window_BackgroundColor}" />
+    <SolidColorBrush x:Key="Window_BackgroundBrush" Color="{Binding [Window_BackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
 
     <!-- Markdown -->
-    <SolidColorBrush x:Key="Markdown_ForegroundBrush" Color="{DynamicResource LighterForegroundColor}" />
-    <SolidColorBrush x:Key="Markdown_BackgroundBrush" Color="{DynamicResource BackgroundColor}" />
-    <SolidColorBrush x:Key="Markdown_Heading1ForegroundBrush" Color="{DynamicResource MainColor}" />
-    <SolidColorBrush x:Key="Markdown_Heading2ForegroundBrush" Color="{DynamicResource AccentForegroundColor}" />
-    <SolidColorBrush x:Key="Markdown_Heading3ForegroundBrush" Color="{DynamicResource AccentForegroundColor}" />
+    <SolidColorBrush x:Key="Markdown_ForegroundBrush" Color="{Binding [LighterForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="Markdown_BackgroundBrush" Color="{Binding [BackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="Markdown_Heading1ForegroundBrush" Color="{Binding [MainColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="Markdown_Heading2ForegroundBrush" Color="{Binding [AccentForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="Markdown_Heading3ForegroundBrush" Color="{Binding [AccentForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
 
     <!-- Colors used by ConversionStateToBrush -->
-    <SolidColorBrush x:Key="UnknownForegroundBrush" Color="{DynamicResource LighterForegroundColor}" />
-    <SolidColorBrush x:Key="ReadyForegroundBrush" Color="{DynamicResource DarkForegroundColor}" />
-    <SolidColorBrush x:Key="InProgressForegroundBrush" Color="{DynamicResource PendingForegroundColor}" />
-    <SolidColorBrush x:Key="DoneForegroundBrush" Color="{DynamicResource SuccessForegroundColor}" />
-    <SolidColorBrush x:Key="FailedForegroundBrush" Color="{DynamicResource ErrorForegroundColor}" />
+    <SolidColorBrush x:Key="UnknownForegroundBrush" Color="{Binding [LighterForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="ReadyForegroundBrush" Color="{Binding [DarkForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="InProgressForegroundBrush" Color="{Binding [PendingForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="DoneForegroundBrush" Color="{Binding [SuccessForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="FailedForegroundBrush" Color="{Binding [ErrorForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
 
-    <SolidColorBrush x:Key="UnknownBackgroundBrush" Color="{DynamicResource DarkBackgroundColor}" />
-    <SolidColorBrush x:Key="ReadyBackgroundBrush" Color="{DynamicResource DarkBackgroundColor}" />
-    <SolidColorBrush x:Key="InProgressBackgroundBrush" Color="{DynamicResource PendingBackgroundColor}" />
-    <SolidColorBrush x:Key="DoneBackgroundBrush" Color="{DynamicResource SuccessBackgroundColor}" />
-    <SolidColorBrush x:Key="FailedBackgroundBrush" Color="{DynamicResource ErrorBackgroundColor}" />
+    <SolidColorBrush x:Key="UnknownBackgroundBrush" Color="{Binding [DarkBackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="ReadyBackgroundBrush" Color="{Binding [DarkBackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="InProgressBackgroundBrush" Color="{Binding [PendingBackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="DoneBackgroundBrush" Color="{Binding [SuccessBackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="FailedBackgroundBrush" Color="{Binding [ErrorBackgroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
     
     <!-- Misc -->
-    <SolidColorBrush x:Key="MainLighterBrush" Color="{DynamicResource MainLighterColor}" />
-    <SolidColorBrush x:Key="MainLightBrush" Color="{DynamicResource MainLightColor}" />
-    <SolidColorBrush x:Key="MainBrush" Color="{DynamicResource MainColor}" />
-    <SolidColorBrush x:Key="MainDarkBrush" Color="{DynamicResource MainDarkColor}" />
-    <SolidColorBrush x:Key="MainDarkerBrush" Color="{DynamicResource MainDarkerColor}" />
-    <SolidColorBrush x:Key="LighterForegroundBrush" Color="{DynamicResource LighterForegroundColor}" />
-    <SolidColorBrush x:Key="LightForegroundBrush" Color="{DynamicResource LightForegroundColor}" />
-    <SolidColorBrush x:Key="AccentForegroundBrush" Color="{DynamicResource AccentForegroundColor}" />
-    <SolidColorBrush x:Key="ErrorForegroundBrush" Color="{DynamicResource ErrorForegroundColor}" />
+    <SolidColorBrush x:Key="MainLighterBrush" Color="{Binding [MainLighterColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="MainLightBrush" Color="{Binding [MainLightColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="MainBrush" Color="{Binding [MainColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="MainDarkBrush" Color="{Binding [MainDarkColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="MainDarkerBrush" Color="{Binding [MainDarkerColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="LighterForegroundBrush" Color="{Binding [LighterForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="LightForegroundBrush" Color="{Binding [LightForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="AccentForegroundBrush" Color="{Binding [AccentForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
+    <SolidColorBrush x:Key="ErrorForegroundBrush" Color="{Binding [ErrorForegroundColor], Source={StaticResource ThemePalette}, Mode=OneWay}" />
     
 </ResourceDictionary>
     

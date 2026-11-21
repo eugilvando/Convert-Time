@@ -1,9 +1,21 @@
 namespace FileConverter
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media;
     using Microsoft.Win32;
+
+    public sealed class ThemePalette : INotifyPropertyChanged
+    {
+        public Color this[string key] =>
+            System.Windows.Application.Current.TryFindResource(key) is Color color ? color : Colors.Transparent;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        internal void Refresh() =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
+    }
 
     internal static class ConvertTheme
     {
@@ -54,6 +66,7 @@ namespace FileConverter
             };
             for (int i = 0; i < colors.GetLength(0); i++)
                 resources[colors[i, 0]] = (Color)ColorConverter.ConvertFromString(colors[i, dark ? 2 : 1]);
+            ((ThemePalette)resources["ThemePalette"]).Refresh();
             foreach (var key in new object[] { SystemColors.WindowBrushKey, SystemColors.ControlBrushKey, SystemColors.MenuBrushKey })
                 Set(resources, key, dark ? "#25262B" : "#FFFFFF");
             foreach (var key in new object[] { SystemColors.WindowTextBrushKey, SystemColors.ControlTextBrushKey, SystemColors.MenuTextBrushKey })
