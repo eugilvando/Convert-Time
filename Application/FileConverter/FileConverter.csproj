@@ -104,6 +104,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApplicationTerminateArgs.cs" />
+    <Compile Include="ConvertTheme.cs" />
+    <Page Include="Views\ConvertWindow.xaml" />
+    <Compile Include="Views\ConvertWindow.xaml.cs"><DependentUpon>ConvertWindow.xaml</DependentUpon></Compile>
     <Compile Include="Controls\ConversionJobControl.xaml.cs">
       <DependentUpon>ConversionJobControl.xaml</DependentUpon>
     </Compile>

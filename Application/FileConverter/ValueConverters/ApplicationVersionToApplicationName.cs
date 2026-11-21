@@ -1,4 +1,4 @@
-﻿// <copyright file="ApplicationVersionToApplicationName.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
+// <copyright file="ApplicationVersionToApplicationName.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
 
 namespace FileConverter.ValueConverters
 {
@@ -12,12 +12,12 @@ namespace FileConverter.ValueConverters
         {
             if (!(value is FileConverter.Version))
             {
-                return "File Converter";
+                return "Convert Time";
             }
 
             FileConverter.Version version = (FileConverter.Version)value;
 
-            return $"File Converter v{version}";
+            return $"Convert Time v{version}";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

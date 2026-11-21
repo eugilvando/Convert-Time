@@ -1,3 +1,9 @@
+# Convert Time 2.3.0
+
+* Janela de conversão para imagens, áudio, vídeo e documentos, com seleção múltipla, arrastar e largar, filtro de perfis compatíveis e pasta de destino por lote.
+* Temas Sistema, Claro e Escuro, marca Convert Time e entrada para abrir os ficheiros no menu clássico do Explorador.
+* Identidade de instalação, preferências e canal de atualizações próprios.
+
 # Change Log
 
 ## Version 2.2

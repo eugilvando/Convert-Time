@@ -1,0 +1,65 @@
+name: Convert Time 2.3.0
+on:
+  push:
+    branches: [integration]
+    paths: ['.github/workflows/convert-time-2.3.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compilar aplicação e MSI x64
+        shell: pwsh
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $msbuild = & $vswhere -latest -requires Microsoft.Component.MSBuild -find 'MSBuild\Current\Bin\MSBuild.exe' | Select-Object -First 1
+          & $msbuild FileConverter.sln /restore /p:Configuration=Release /p:Platform=x64 /m /verbosity:minimal
+          if ($LASTEXITCODE) { throw "MSBuild: $LASTEXITCODE" }
+      - name: Instalar, abrir a GUI e converter um lote
+        shell: pwsh
+        run: |
+          $msi = Get-ChildItem Installer -Recurse -Filter Convert-Time-2.3.0-x64.msi | Where-Object FullName -Match '\\bin\\' | Select-Object -First 1
+          if (!$msi) { throw 'MSI em falta' }
+          $install = Start-Process msiexec -ArgumentList "/i `"$($msi.FullName)`" /qn /norestart" -Wait -PassThru
+          if ($install.ExitCode -notin 0,3010) { throw "MSI: $($install.ExitCode)" }
+          $exe = Join-Path $env:ProgramFiles 'Convert Time\FileConverter.exe'
+          $homeWindow = Start-Process $exe -PassThru
+          try {
+            $deadline = (Get-Date).AddSeconds(40)
+            do { Start-Sleep -Milliseconds 400; $homeWindow.Refresh() } until ($homeWindow.MainWindowTitle -eq 'Convert Time' -or $homeWindow.HasExited -or (Get-Date) -gt $deadline)
+            if ($homeWindow.MainWindowTitle -ne 'Convert Time') { throw 'A janela principal não abriu' }
+          } finally { if (!$homeWindow.HasExited) { $homeWindow.Kill(); $homeWindow.WaitForExit() } }
+          $dir = New-Item -ItemType Directory -Path (Join-Path $env:RUNNER_TEMP 'convert-time-test')
+          'first','second' | ForEach-Object { Copy-Item Resources/Icons/ApplicationIcon.png (Join-Path $dir "$_.png") }
+          $job = Start-Process $exe -ArgumentList "--conversion-preset `"To Jpg`" `"$dir\first.png`" `"$dir\second.png`"" -PassThru
+          try {
+            $deadline = (Get-Date).AddSeconds(60)
+            do { Start-Sleep -Milliseconds 500; $out = @(Get-ChildItem $dir -Filter '*.jpg' | Where-Object Length -gt 100) } until ($out.Count -eq 2 -or (Get-Date) -gt $deadline)
+            if ($out.Count -ne 2) { throw 'Falhou a conversão do lote PNG para JPG' }
+          } finally { if (!$job.HasExited) { $job.Kill(); $job.WaitForExit() } }
+          New-Item -ItemType Directory -Path dist
+          Copy-Item $msi.FullName dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Convert-Time-2.3.0-x64
+          path: dist/*.msi
+  release:
+    needs: build
+    if: github.ref == 'refs/heads/integration'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Convert-Time-2.3.0-x64
+          path: dist
+      - name: Publicar release com o instalador validado
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create v2.3.0 dist/*.msi --target "$GITHUB_SHA" --title "Convert Time 2.3.0" --notes-file RELEASE-2.3.0.md

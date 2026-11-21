@@ -33,7 +33,7 @@ namespace FileConverterExtension
             {
                 if (PathHelpers.fileConverterRegistryKey == null)
                 {
-                    PathHelpers.fileConverterRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\FileConverter");
+                    PathHelpers.fileConverterRegistryKey = Registry.CurrentUser.OpenSubKey(@"Software\ConvertTime");
                     if (PathHelpers.fileConverterRegistryKey == null)
                     {
                         throw new Exception("Can't retrieve file converter registry entry.");
@@ -62,7 +62,7 @@ namespace FileConverterExtension
             get
             {
                 string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-                path = Path.Combine(path, "FileConverter");
+                path = Path.Combine(path, "ConvertTime");
 
                 if (!Directory.Exists(path))
                 {

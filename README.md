@@ -1,27 +1,12 @@
-# File Converter
+# Convert Time
 
-## Description
+Aplicação para Windows que converte imagens, áudio, vídeo e documentos. Abra **Convert Time** no menu Iniciar, adicione os ficheiros e escolha um perfil compatível com todo o lote. Pode ajustar as opções do perfil para essa conversão, escolher a pasta de destino e acompanhar o progresso.
 
-**File Converter** is a very simple tool which allows you to convert and compress one or several file(s) using the context menu of windows explorer.
+[Transferir o instalador para Windows x64](https://github.com/eugilvando/My-File-Converter/releases) · [Comunicar um problema](https://github.com/eugilvando/My-File-Converter/issues)
 
-![File Converter Usage](Resources/FileConverterUsage.gif)
+O menu de contexto clássico permite converter diretamente ou abrir a seleção na aplicação. No Windows 11 encontra estas ações em **Mostrar mais opções**. Em **Tema**, escolha Sistema, Claro ou Escuro. A conversão de documentos Office depende da aplicação Microsoft Office correspondente instalada.
 
-You can download it here: [file-converter.io](https://file-converter.io/?from=readme.md).
-
-You can find more information about what's in File converter and how to use it on the [wiki](https://github.com/Tichau/FileConverter/wiki).
-
-## Donate
-
-File Converter is a personal open source project started in 2014. I have put hundreds of hours adding, refining and tuning File Converter with the goal of making the conversion and compression of files an easy task for everyone.
-
-You can help me by [contributing to the project](https://github.com/Tichau/FileConverter/wiki#contribute), by [making a donation](https://www.paypal.com/donate/?cmd=_donations&business=3BDWQTYTTA3D8&item_name=File+Converter+Donations&currency_code=EUR&Z3JncnB0=) or just by [saying thanks](https://saythanks.io/to/Tichau) :).
-
-## Troubleshooting
-
-If you encounter any problem with File Converter, you can:
-
-* See the already known problems in the [troubleshooting section of the documentation](https://github.com/Tichau/FileConverter/wiki/Troubleshooting).
-* Or report an issue on the [bug tracker](https://github.com/Tichau/FileConverter/issues).
+Convert Time é uma derivação de [File Converter, de Adrien Allard](https://github.com/Tichau/FileConverter), distribuída sob GPLv3. Os agradecimentos e as informações sobre as dependências encontram-se abaixo.
 
 ## Setup development environment
 

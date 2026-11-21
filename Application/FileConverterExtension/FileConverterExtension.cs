@@ -1,4 +1,4 @@
-﻿// <copyright file="FileConverterExtension.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
+// <copyright file="FileConverterExtension.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
 
 namespace FileConverterExtension
 {
@@ -17,9 +17,9 @@ namespace FileConverterExtension
     /// <summary>
     /// File converter context menu extension class.
     /// </summary>
-    [ComVisible(true), Guid("AF9B72B5-F4E4-44B0-A3D9-B55B748EFE90")]
+    [ComVisible(true), Guid("CEDA2885-80E7-4780-9364-BF248B97468B")]
     [COMServerAssociation(AssociationType.AllFiles)]
-    public class FileConverterExtension : SharpContextMenu
+    public class ConvertTimeContextMenu : SharpContextMenu
     {
         private const int MaximumProcessArgumentsLength = 8000; // https://learn.microsoft.com/en-us/troubleshoot/windows-client/shell-experience/command-line-string-limitation
 
@@ -100,7 +100,7 @@ namespace FileConverterExtension
 
             ToolStripMenuItem fileConverterItem = new ToolStripMenuItem
             {
-                Text = "File Converter",
+                Text = "Convert Time",
                 Image = new Icon(Properties.Resources.ApplicationIcon, SystemInformation.SmallIconSize).ToBitmap(),
             };
 
@@ -181,6 +181,9 @@ namespace FileConverterExtension
                 subItem.Click += (sender, args) => this.OpenSettings();
             }
 
+            var open = new ToolStripMenuItem("Abrir no Convert Time…");
+            open.Click += (sender, args) => this.ConvertFiles(null);
+            fileConverterItem.DropDownItems.Add(open);
             menu.Items.Add(fileConverterItem);
 
             return menu;
@@ -313,6 +316,7 @@ namespace FileConverterExtension
 
             void BuildConversionPresetArgument(StringBuilder sb)
             {
+                if (presetName == null) return;
                 sb.Append("--conversion-preset ");
                 sb.Append(" \"");
                 sb.Append(presetName);

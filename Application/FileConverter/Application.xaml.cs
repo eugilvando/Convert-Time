@@ -1,4 +1,4 @@
-﻿// <copyright file="Application.xaml.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
+// <copyright file="Application.xaml.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
 
 /*  File Converter - This program allow you to convert file format to another.
     Copyright (C) 2026 Adrien Allard
@@ -38,7 +38,7 @@ namespace FileConverter
         private static readonly Version Version = new Version()
                                                       {
                                                           Major = 2,
-                                                          Minor = 2,
+                                                          Minor = 3,
                                                           Patch = 0,
                                                       };
 
@@ -48,6 +48,8 @@ namespace FileConverter
         private bool verbose;
         private bool showSettings;
         private bool showHelp;
+        private List<string> initialFiles;
+        internal IEnumerable<string> InitialFiles => this.initialFiles;
 
         [DllImport("kernel32.dll")]
         static extern bool AttachConsole(uint dwProcessId);
@@ -90,10 +92,17 @@ namespace FileConverter
             
             this.RegisterServices();
 
+            ConvertTheme.Start();
             this.Initialize();
 
             // Navigate to the wanted view.
             INavigationService navigationService = Ioc.Default.GetRequiredService<INavigationService>();
+
+            if (this.initialFiles != null)
+            {
+                navigationService.Show(Pages.Convert);
+                return;
+            }
 
             if (this.showHelp)
             {
@@ -208,6 +217,7 @@ namespace FileConverter
 
             INavigationService navigationService = Ioc.Default.GetRequiredService<INavigationService>();
 
+            navigationService.RegisterPage<ConvertWindow>(Pages.Convert, false, true);
             navigationService.RegisterPage<HelpWindow>(Pages.Help, false, true);
             navigationService.RegisterPage<MainWindow>(Pages.Main, false, true);
             navigationService.RegisterPage<SettingsWindow>(Pages.Settings, true, true);
@@ -238,8 +248,7 @@ namespace FileConverter
 
             if (args.Length == 1)
             {
-                // Display help windows to explain that this application is a context menu extension.
-                this.showHelp = true;
+                this.initialFiles = new List<string>();
                 return;
             }
 
@@ -311,6 +320,10 @@ namespace FileConverter
                                 return;
                             }
 
+                        case "help":
+                            this.showHelp = true;
+                            return;
+
                         case "version":
                             Console.WriteLine(ApplicationVersion.ToString());
                             Application.AskForShutdown();
@@ -380,7 +393,22 @@ namespace FileConverter
                 }
             }
 
+            if (filePaths.Count > 0 && conversionPresetName == null && !this.showSettings)
+            {
+                this.initialFiles = filePaths;
+                return;
+            }
             this.RunConversions(filePaths, conversionPresetName);
+        }
+
+        internal void StartBatch(List<string> files, ConversionPreset preset)
+        {
+            var jobs = files.ConvertAll(path => ConversionJobFactory.Create(preset, path));
+            var service = Ioc.Default.GetRequiredService<IConversionService>();
+            foreach (var job in jobs) service.RegisterConversionJob(job);
+            Ioc.Default.GetRequiredService<INavigationService>().Show(Pages.Main);
+            service.ConversionJobsTerminated += this.ConversionService_ConversionJobsTerminated;
+            service.ConvertFilesAsync();
         }
 
         private void RunConversions(List<string> filePaths, string conversionPresetName)
