@@ -17,7 +17,7 @@ jobs:
         run: |
           $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
           $msbuild = & $vswhere -latest -requires Microsoft.Component.MSBuild -find 'MSBuild\Current\Bin\MSBuild.exe' | Select-Object -First 1
-          & $msbuild FileConverter.sln /restore /p:Configuration=Release /p:Platform=x64 /m /verbosity:minimal
+          & $msbuild Convert-Time.sln /restore /p:Configuration=Release /p:Platform=x64 /m /verbosity:minimal
           if ($LASTEXITCODE) { throw "MSBuild: $LASTEXITCODE" }
       - name: Instalar, abrir a GUI e converter um lote
         shell: pwsh
@@ -87,4 +87,6 @@ jobs:
       - name: Publicar release com o instalador validado
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create v2.3.1 dist/*.msi --target "$GITHUB_SHA" --title "Convert Time 2.3.1" --notes-file RELEASE-2.3.1.md
+        run: |
+          if gh release view v2.3.1 > /dev/null 2>&1; then exit 0; fi
+          gh release create v2.3.1 dist/*.msi --target "$GITHUB_SHA" --title "Convert Time 2.3.1" --notes-file RELEASE-2.3.1.md
